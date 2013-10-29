@@ -3,42 +3,51 @@
 <head>
 <meta charset="utf-8">
 <style type="text/css">
-#divObj{width:90px;height:90px;position:absolute;background:red}
+#divObj{width:90px;height:90px;position:absolute;background:red;line-height:90px;text-align:center;font-size:15px}
 </style>
 
 </head>
 <body>
 <div id="divObj">
+Drag me!!
 </div>
 <script type="text/javascript">
+
 var m3 = {
 	dragStart : function(event){ //mousedown
 		var doc = document;
 		var domObj = doc.getElementById("divObj");
 		domObj.onmousedown = function(event){
-			var startX = event.clientX, startY = event.clientY;
+
+			var startX = window.event.clientX, startY = window.event.clientY;
 			var objX = domObj.offsetLeft, objY = domObj.offsetTop;
 			var calX = startX - objX, calY = startY - objY;
 			if (doc.addEventListener) {
 				doc.addEventListener("mousemove",dragMove,true);
 				doc.addEventListener("mouseup",dragEnd,true);
-				
 			}
 			else {
 				domObj.setCapture();
-				domObj.attachEvent("mousemove",dragMove);
-				domObj.attachEvent("mouseup",dragEnd);
+				domObj.attachEvent("onmousemove",dragMove);
+				domObj.attachEvent("onmouseup",dragEnd);
+
 			}
-			if (event.stopPropagation) {
-				event.stopPropagation()
+			if (window.event.stopPropagation) {
+				window.event.stopPropagation();
 			}
 			else {
-				event.cancelBubble = true
+				window.event.cancelBubble  = true;
 			}
 			function dragMove(e) {
+				if (!e) e = window.event
 				domObj.style.left = e.clientX - calX + "px";
 				domObj.style.top = e.clientY - calY + "px";
-				e.stopPropagation()
+				if (e.stopPropagation) {
+					e.stopPropagation()
+				}
+				else {
+					e.cancelBubble = true
+				}
 			}
 			function dragEnd(e) {
 				if (doc.removeEventListener) {
@@ -46,8 +55,9 @@ var m3 = {
 					doc.removeEventListener("mousemove",dragMove,true);
 				}
 				else {
-					domObj.detachEvent("mouseup",dragEnd)
-					domObj.detachEvent("mousemove",dragMove);
+					domObj.detachEvent("onmouseup",dragEnd)
+					domObj.detachEvent("onmousemove",dragMove);
+					domObj.releaseCapture()
 				}
 				if (e.stopPropagation) {
 					e.stopPropagation()
