@@ -13,24 +13,49 @@
 <script type="text/javascript">
 var m3 = {
 	dragStart : function(event){ //mousedown
-		
-		var domObj = document.getElementById("divObj");
+		var doc = document;
+		var domObj = doc.getElementById("divObj");
 		domObj.onmousedown = function(event){
 			var startX = event.clientX, startY = event.clientY;
 			var objX = domObj.offsetLeft, objY = domObj.offsetTop;
 			var calX = startX - objX, calY = startY - objY;
-			document.addEventListener("mousemove",dragMove,true);
-			document.addEventListener("mouseup",dragEnd,true);
-			event.stopPropagation()
+			if (doc.addEventListener) {
+				doc.addEventListener("mousemove",dragMove,true);
+				doc.addEventListener("mouseup",dragEnd,true);
+				
+			}
+			else {
+				domObj.setCapture();
+				domObj.attachEvent("mousemove",dragMove);
+				domObj.attachEvent("mouseup",dragEnd);
+			}
+			if (event.stopPropagation) {
+				event.stopPropagation()
+			}
+			else {
+				event.cancelBubble = true
+			}
 			function dragMove(e) {
 				domObj.style.left = e.clientX - calX + "px";
 				domObj.style.top = e.clientY - calY + "px";
 				e.stopPropagation()
 			}
 			function dragEnd(e) {
-				document.removeEventListener("mouseup",dragEnd,true);
-				document.removeEventListener("mousemove",dragMove,true);
-				e.stopPropagation()
+				if (doc.removeEventListener) {
+					doc.removeEventListener("mouseup",dragEnd,true);
+					doc.removeEventListener("mousemove",dragMove,true);
+				}
+				else {
+					domObj.detachEvent("mouseup",dragEnd)
+					domObj.detachEvent("mousemove",dragMove);
+				}
+				if (e.stopPropagation) {
+					e.stopPropagation()
+				}
+				else {
+					e.cancelBubble = true
+				}
+				
 			}
 		}
 	},
