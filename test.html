@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style type="text/css">
+#divObj{width:90px;height:90px;position:absolute;background:red}
+</style>
+<script type="text/javascript">
+var m3 = {
+	dragStart : function(){
+		window.onload = function(){
+			var domObj = document.getElementById("divObj");
+			domObj.onmousedown = function(){
+				m3.dragMove(domObj)
+			}
+		}
+		
+	},
+	dragMove : function(domObj) {
+		var posX = window.event.x;
+		var posY = window.event.y;
+
+		
+	},
+	init : function() {
+		m3.dragStart()
+	}
+
+}
+var nameV = {
+	map : "map",
+	me : "me",
+	main : "main"
+}
+
+m3.init()
+
+</script>
+</head>
+<body>
+<div id="divObj">
+</div>
+
+
+</body>
+</html>
