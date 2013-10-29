@@ -5,27 +5,38 @@
 <style type="text/css">
 #divObj{width:90px;height:90px;position:absolute;background:red}
 </style>
+
+</head>
+<body>
+<div id="divObj">
+</div>
 <script type="text/javascript">
 var m3 = {
-	dragStart : function(){
-		window.onload = function(){
-			var domObj = document.getElementById("divObj");
-			domObj.onmousedown = function(){
-				m3.dragMove(domObj)
+	dragStart : function(event){ //mousedown
+		
+		var domObj = document.getElementById("divObj");
+		domObj.onmousedown = function(event){
+			var startX = event.clientX, startY = event.clientY;
+			var objX = domObj.offsetLeft, objY = domObj.offsetTop;
+			var calX = startX - objX, calY = startY - objY;
+			document.addEventListener("mousemove",dragMove,true);
+			document.addEventListener("mouseup",dragEnd,true);
+			event.stopPropagation()
+			function dragMove(e) {
+				domObj.style.left = e.clientX - calX + "px";
+				domObj.style.top = e.clientY - calY + "px";
+				e.stopPropagation()
+			}
+			function dragEnd(e) {
+				document.removeEventListener("mouseup",dragEnd,true);
+				document.removeEventListener("mousemove",dragMove,true);
+				e.stopPropagation()
 			}
 		}
-		
-	},
-	dragMove : function(domObj) {
-		var posX = window.event.x;
-		var posY = window.event.y;
-
-		
 	},
 	init : function() {
 		m3.dragStart()
 	}
-
 }
 var nameV = {
 	map : "map",
@@ -36,11 +47,6 @@ var nameV = {
 m3.init()
 
 </script>
-</head>
-<body>
-<div id="divObj">
-</div>
-
 
 </body>
 </html>
