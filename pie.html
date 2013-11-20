@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style type="text/css">
+a{display:inline-block}
+#out{width:80px;height:80px;background:red}
+#inObj{width:40px;height:30px;background:blue}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script><!-- [D] 테스트용 js -->
+</head>
+<body>
+<a href="http://naver.com" id="out">
+	<button type="button" id="inObj"></button>
+</a>
+<script type="text/javascript">
+/*
+var inObj = document.getElementById("inObj");
+var out = document.getElementById("out");
+out.onclick = function(){
+	
+	alert("OUT")
+}
+
+inObj.onclick = function(){
+	
+	alert("IN");
+	return false
+	
+	
+}
+*/
+
+
+$("#out").click(function(){
+	alert("IN")
+})
+$("#inObj").click(function(){
+	alert("OUT")
+	return false
+})
+
+</script>
+
+</body>
+</html>
