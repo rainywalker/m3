@@ -55,10 +55,23 @@ $(function(){
 	$("button").click(function(){
 		var btns = $(this).text();
 		switch (btns) {
-			case "prev" : clearInterval(infinite); loopObj2(rightGo,btns);break;
-			case "next" : clearInterval(infinite); loopObj2(leftGo,btns);break;
-			case "auto" : loopObj(leftGo); break;
-			case "stop" : clearInterval(infinite); break;
+			case "prev" : return function(){
+				clearInterval(infinite); 
+				loopObj2(rightGo,btns);
+				
+			}
+			case "next" : return function(){ 
+				clearInterval(infinite); 
+				loopObj2(leftGo,btns);
+				
+			case "auto" : return function(){
+				loopObj(leftGo); 
+				
+			}
+			case "stop" : return function(){
+				clearInterval(infinite);
+				
+			}
 		}
 	})
 })
