@@ -57,7 +57,7 @@ $(function(){
 		switch (btns) {
 			case "prev" : clearInterval(infinite); loopObj2(rightGo,btns);break;
 			case "next" : clearInterval(infinite); loopObj2(leftGo,btns);break;
-			case "auto" : loopObj(leftGo); break;
+			case "auto" : clearInterval(infinite); loopObj(leftGo); break;
 			case "stop" : clearInterval(infinite); break;
 		}
 	})
