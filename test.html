@@ -6,11 +6,11 @@
 ul,li,a{margin:0;padding:0;}
 a{color:#fff}
 li{list-style:none;text-align:center;}
-#t{overflow:hidden;position:relative;width:100%;height:100px;margin:0 auto;background:#ddd;}
-#t ul{overflow:hidden;width:325%;position:absolute;top:25px;left:-20%}
-#t li{width:6%;height:50px;background:#000;float:left;margin-left:22px;line-height:50px;}
+#t{overflow:hidden;position:relative;width:504px;height:100px;margin:20% auto 0;background:#ddd;}
+#t ul{overflow:hidden;width:200%;position:absolute;top:25px;left:-60px}
+#t li{width:50px;height:50px;background:#000;float:left;margin-left:22px;line-height:50px;}
 #t li:first-child{margin-left:0;}
-.btns{width:100%;margin:20px auto;text-align:center}
+.btns{width:504px;margin:20px auto;text-align:center}
 </style>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript">
@@ -29,7 +29,7 @@ $(function(){
 			},"slow",function(){
 				var frst = $("#t ul li:first-child")
 				$("#t ul").append(frst)
-				$("#t ul").css("left","-20%");
+				$("#t ul").css("left","-60px");
 			});
 		},1000);
 	}
@@ -46,7 +46,7 @@ $(function(){
 				if (btns == "prev") {
 					$("#t ul").prepend(last)	
 				}
-				$("#t ul").css("left","-20%");
+				$("#t ul").css("left","-60px");
 			});
 		},100);
 	}
@@ -55,10 +55,23 @@ $(function(){
 	$("button").click(function(){
 		var btns = $(this).text();
 		switch (btns) {
-			case "prev" : clearInterval(infinite); loopObj2(rightGo,btns);break;
-			case "next" : clearInterval(infinite); loopObj2(leftGo,btns);break;
-			case "auto" : clearInterval(infinite); loopObj(leftGo); break;
-			case "stop" : clearInterval(infinite); break;
+			case "prev" : return function(){
+				clearInterval(infinite); 
+				loopObj2(rightGo,btns);
+				
+			}
+			case "next" : return function(){ 
+				clearInterval(infinite); 
+				loopObj2(leftGo,btns);
+				
+			case "auto" : return function(){
+				loopObj(leftGo); 
+				
+			}
+			case "stop" : return function(){
+				clearInterval(infinite);
+				
+			}
 		}
 	})
 })
