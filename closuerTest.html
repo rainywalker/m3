@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>m3 test</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="testMobile.css" />
+<script type="text/javascript" src="m3.js"></script>
+<style type="text/css">
+h1{font-size:5.9rem}
+</style>
+</head>
+<body>
+<h1>rainywalker</h1>
+<ul>
+<li>NAVER</li>
+<li>DAUM</li>
+<li>NATE</li>
+<li>YAHOO</li>
+</ul>
+<script type="text/javascript">
+
+var li_Ele = document.getElementsByTagName("li");
+for (var i=0; i<li_Ele.length; i++) {
+	 (function(){
+		var idx = i;
+		li_Ele[i].onclick = function(){
+			console.log(idx+1)
+		}
+	})()
+}
+
+
+/*
+function test() {
+	var s = 0;
+	(function test2() {
+		var s = 1;
+		console.log(s)
+	})()
+}
+test()
+*/
+
+/*
+var a = 100
+function func() {
+	var a = 0;
+	return function(){
+		return ++a;
+	}
+}
+var s = func()
+
+var b = function(){
+	return ++a
+}
+console.log(b())
+
+*/
+
+
+
+
+</script>
+</body>
+</html>

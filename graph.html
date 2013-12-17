@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style type="text/css">
+#graph_set{position:relative;border-bottom:1px solid #999;float:none;height:200px;margin-bottom: 50px}
+#graph_set:after{display:block;content:"";clear: both}
+.graph_obj{position:absolute;bottom:0;width:10%;}
+.graph_obj.on1{left:0;}
+.graph_obj.on2{left:15%}
+.graph_obj.on3{left:30%}
+.graph_obj.on4{left:45%}
+.graph_obj.on5{left:60%}
+.graph_obj .single_obj{width:100%;display:inline-block;background:#ccc;position:absolute;bottom:0;left:0;text-align:center;vertical-align:bottom;line-height:1em;}
+.graph_obj .single_obj em{font-size:0;overflow:hidden;}
+.tx_val{position:absolute;bottom:-30px;left:0;display:inline-block;width:100%;font-size:12px;text-align:center}
+.tx_val input[type="text"]{width:80%;text-align:center;}
+
+#star_set{margin-top:20px;}
+.star_obj{position:relative;background:url(img/starBg.png) no-repeat;height:20px;}
+.star_obj .gage{display:inline-block;position:absolute;left:0;top:0;background:url(img/starBg.png) no-repeat 0 -25px;height:20px;}
+.star_obj .gage em{overflow:hidden;font-size:0;line-height:0}
+.star_obj input[type="text"]{margin-left:130px;width:50px;font-size:12px;height:18px;vertical-align:middle;text-align:center;}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+<!-- stick Grapg horizon -->
+<div id="graph_set">
+	<div class="graph_obj on1">
+		<span class="single_obj"><em>50</em></span>		
+		<span class="tx_val"><input type="text" value="50"></span>
+
+	</div>
+	<div class="graph_obj on2">
+		<span class="single_obj"><em>25</em></span>		
+		<span class="tx_val"><input type="text" value="25"></span>
+	</div>
+	<div class="graph_obj on3">
+		<span class="single_obj"><em>100</em></span>		
+		<span class="tx_val"><input type="text" value="100"></span>
+	</div>
+	<div class="graph_obj on4">
+		<span class="single_obj"><em>70</em></span>		
+		<span class="tx_val"><input type="text" value="70"></span>
+	</div>
+	<div class="graph_obj on5">
+		<span class="single_obj"><em>85</em></span>		
+		<span class="tx_val"><input type="text" value="85"></span>
+	</div>
+</div>
+
+<!-- star Rate -->
+<div id="star_set">
+	<div class="star_obj">
+		<span class="gage"><em>50점</em></span>
+		<input type="text" value="50">
+	</div>
+</div>
+<div id="star_set">
+	<div class="star_obj">
+		<span class="gage"><em>850점</em></span>
+		<input type="text" value="85">
+	</div>
+</div>
+<script type="text/javascript">
+var graph ={
+	horizon : function(){
+		var maxNum = 200;
+		$(".single_obj").each(function(){
+			var dftVal = $(this).next().children("input").val()
+			$(this).height(maxNum * dftVal / 100)
+		})
+		$(".tx_val input").keyup(function(){
+			var obh_h = $(this).parent().prev();
+			var objVal = $(this).val();
+			if (objVal >= 100) {
+				$(obh_h).css("height","200px");
+				$(obh_h).children("em").text("100")
+				
+			}
+			else {
+				$(obh_h).height(maxNum * objVal / 100);
+				$(obh_h).children("em").text(objVal)
+			}
+			//console.log($(obh_h).children("em").text(objVal))
+		});
+	},
+	starRate : function(){
+		var maxWidth = 117;
+		$(".gage").each(function(){
+			var dftVal = $(this).next().val();
+			$(this).width(parseInt(maxWidth * dftVal / 100))
+			$(this).children("em").text(dftVal+"점")
+		})
+		$(".star_obj input").keyup(function(){
+			var star_obj = $(this).prev();
+			var objVal = $(this).val();
+			if (100 <= objVal) {
+				$(star_obj).css("width","117px");
+				$(this).prev().children("em").text("100" + "점")
+			} 
+			else{
+				$(star_obj).width(parseInt(maxWidth * objVal / 100))
+				$(this).prev().children("em").text(objVal + "점")
+			};
+		})
+	},
+	init : function(){
+		graph.horizon()
+		graph.starRate()
+	}
+}
+
+graph.init()	
+	
+	
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-2013-11-18 /*!
+/*!
  * jQuery JavaScript Library v1.5
  * http://jquery.com/
  *

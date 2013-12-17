@@ -5,32 +5,33 @@ m2 = "me";
 m3= "map";
 */
 
-function addLoadEvent(func){
-	var oldonload = window.onload;
-	if (typeof window.onload != 'fucntion') {
-		window.onload = func;
-	}
-	else {
-		window.onload = function(){
-			oldonload();
-			func()
+var doc = window.document;
+
+
+
+//Find id, class 
+
+
+function m3(str) {
+	if (str.charAt(0) === "#") {
+		var objId = doc.getElementById(str.slice(1))
+			}
+	else if (str.charAt(0) === ".") {
+		var all = doc.getElementsByTagName("*");
+		var all_length = all.length;
+		for (var i=0; i<all_length; i++) {
+			if (all[i].className != " ") {
+				if (all[i].className === str.slice(1)) {
+					var objClass = str.slice(1);
+				}
+			}
+			else {
+				return false
+			}
+
 		}
 	}
+	
 }
 
-function $(str) {
-	if (str.indexOf("#") != -1) {
-		var fixStr = str.split("#").join("")
-		document.getElementById(fixStr)
-		
-	}
-	else {
-		console.log("x")
-	}
-}
-
-
-
-
-
-
+	

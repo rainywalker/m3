@@ -3,118 +3,24 @@
 <head>
 <meta charset="utf-8">
 <style type="text/css">
-#divObj{width:90px;height:90px;position:absolute;background:purple;line-height:90px;text-align:center;font-size:15px;color:#fff;z-index:10}
-canvas{position:absolute;left:150px}
+#t{background:red;height:50px;}
+p::selection{background:#c3effd; color:red}
 </style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 </head>
 <body>
-<div id="divObj">
-Drag me!!
-</div>
-<canvas id="canvas3" width="100" height="100"></canvas>
+	<p>dfasdf asdf asdf sdaf asdf asdf sadfaf sadf asdf sad fasdf asdf asd fasdf  rty fhgf</p>
+<div id="t"></div>
 <script type="text/javascript">
-
-var v_data ={
-	canvas : document.getElementById("canvas3"),
-	ctx : document.getElementById("canvas3").getContext("2d"),
-	dataList : [10, 45, 55],
-	colorList : ['yellow', 'red', 'blue'],
-	pie:  function() {
-		var radius = v_data.canvas.height / 2 - 5;
-		var centerX = v_data.canvas.width / 2;
-		var centerY = v_data.canvas.height / 2;
-		var total = 0;
-		for(i=0; i < v_data.dataList.length; i++) {
-			total += v_data.dataList[i]; 
-		};
-		
-		var lastend=0;
-		var offset = Math.PI / 2;
-		for(i=0; i < v_data.dataList.length; i++)  {
-			var thispart = v_data.dataList[i]; 
-			v_data.ctx.beginPath();
-			v_data.ctx.fillStyle = v_data.colorList[i];
-			v_data.ctx.moveTo(centerX,centerY);
-			var arcsector = Math.PI * (2 * thispart / total);
-			v_data.ctx.arc(centerX, centerY, radius, lastend - offset, lastend + arcsector - offset, false);
-			v_data.ctx.lineTo(centerX, centerY);
-			v_data.ctx.fill();
-			v_data.ctx.closePath();
-			lastend += arcsector;
-		}
-	}
-}
-//v_data.pie()
-
-
-var m3 = {
-	dragStart : function(event){
-		var doc = document;
-		var domObj = doc.getElementById("divObj");
-		domObj.onmousedown = function(event){
-			var startX = event.clientX, startY = event.clientY;
-			var objX = domObj.offsetLeft, objY = domObj.offsetTop;
-			var calX = startX - objX, calY = startY - objY;
-			if (doc.addEventListener) {
-				doc.addEventListener("mousemove",dragMove,true);
-				doc.addEventListener("mouseup",dragEnd,true);
-			}
-			else {
-				domObj.setCapture();
-				domObj.attachEvent("onmousemove",dragMove);
-				domObj.attachEvent("onmouseup",dragEnd);
-			}
-			if (event.stopPropagation) {
-				event.stopPropagation();
-			}
-			else {
-				event.cancelBubble  = true;
-			}
-			event.preventDefault();
-			function dragMove(e) {
-				
-				if (!e) e = event
-				domObj.style.left = e.clientX - calX + "px";
-				domObj.style.top = e.clientY - calY + "px";
-				if (e.stopPropagation) {
-					e.stopPropagation()
-				}
-				else {
-					e.cancelBubble = true
-				}
-				
-			}
-			function dragEnd(e) {
-				if (doc.removeEventListener) {
-					doc.removeEventListener("mouseup",dragEnd,true);
-					doc.removeEventListener("mousemove",dragMove,true);
-				}
-				else {
-					domObj.detachEvent("onmouseup",dragEnd)
-					domObj.detachEvent("onmousemove",dragMove);
-					domObj.releaseCapture()
-				}
-				if (e.stopPropagation) {
-					e.stopPropagation()
-				}
-				else {
-					e.cancelBubble = true
-				}
-			}
-		}
-	},
-	init : function() {
-		m3.dragStart()
-	}
-}
-var nameV = {
-	map : "map",
-	me : "me",
-	main : "main"
-}
-m3.init()
-
+var timer;
+$(window).resize(function(){
+	clearTimeout(timer);
+	timer = setTimeout(function(){
+		console.log($("#t").width())
+	},200)
+})
+//112.175.50.243
 </script>
-
 </body>
 </html>
