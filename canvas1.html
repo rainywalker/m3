@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+
+<style type="text/css">
+html,body{width:100%;margin:0;padding:0;background:#fff}
+canvas{display:block}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+<canvas id="sq">d</canvas>
+
+<script type="text/javascript">
+var sq = document.getElementById("sq");
+var c = sq.getContext("2d");
+sq.width = window.innerWidth;
+sq.height = window.innerHeight;	
+window.addEventListener("resize",resizeCanvas,false);
+function resizeCanvas() {
+	sq.width = window.innerWidth;
+	sq.height = window.innerHeight;	
+}
+
+var blobArray = [];
+function randomRange(min, max) {
+	return Math.random() * (max-min) + min; 
+}
+setInterval(draw,30)
+function draw() {
+	var blob = {
+		x : 250,
+		y : 150,
+		xSpeed : randomRange(-10,10),
+		ySpeed : randomRange(-10,10),
+		size : 20
+	}
+	blobArray.push(blob);
+	c.clearRect(0,0,9999,9999);
+	for (var i=0; i<blobArray.length; i++) {
+		blob = blobArray[i]
+		c.fillStyle = "gray";
+		c.fillRect(blob.x,blob.y,blob.size,blob.size);
+		blob.x = blob.x + blob.xSpeed;
+		blob.y = blob.y + blob.ySpeed;
+		blob.size *= 0.96;
+	}
+}
+
+
+</script>
+</body>
+</html>
