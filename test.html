@@ -1,104 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="utf-8">
+
 <style type="text/css">
-ul,li,a{margin:0;padding:0;}
-a{color:#fff}
-li{list-style:none;text-align:center;}
-#t{overflow:hidden;position:relative;width:504px;height:100px;margin:20% auto 0;background:#ddd;}
-#t ul{overflow:hidden;width:200%;position:absolute;top:25px;left:-60px}
-#t li{width:50px;height:50px;background:#000;float:left;margin-left:22px;line-height:50px;}
-#t li:first-child{margin-left:0;}
-.btns{width:504px;margin:20px auto;text-align:center}
+html,body{width:100%;margin:0;padding:0;background:#fff}
+canvas{display:block}
 </style>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script type="text/javascript">
-$(function(){
-	var li_ele = $("#t li");
-	var li_w = $("#t li").width()+22;
-	var leftGo = "-=";
-	var rightGo = "+="
-	var infinite;
-	var rolling;
-	//auto play
-	function loopObj(behavior) {
-		infinite = setInterval(function(){
-			$("#t ul").animate({
-				left:behavior+li_w,
-			},"slow",function(){
-				var frst = $("#t ul li:first-child")
-				$("#t ul").append(frst)
-				$("#t ul").css("left","-60px");
-			});
-		},1000);
-	}
-	function loopObj2(behavior,btns) {
-		rolling = setTimeout(function(){
-			$("#t ul").animate({
-				left:behavior+li_w,
-			},"fast",function(){
-				var frst = $("#t ul li:first-child");
-				var last = $("#t ul li:last-child");
-				if (btns == "next") {
-					$("#t ul").append(frst)	
-				}
-				if (btns == "prev") {
-					$("#t ul").prepend(last)	
-				}
-				$("#t ul").css("left","-60px");
-			});
-		},100);
-	}
-	loopObj(leftGo)
-	//custom play
-	$("button").click(function(){
-		var btns = $(this).text();
-		switch (btns) {
-			case "prev" : return function(){
-				clearInterval(infinite); 
-				loopObj2(rightGo,btns);
-				
-			}
-			case "next" : return function(){ 
-				clearInterval(infinite); 
-				loopObj2(leftGo,btns);
-				
-			case "auto" : return function(){
-				loopObj(leftGo); 
-				
-			}
-			case "stop" : return function(){
-				clearInterval(infinite);
-				
-			}
-		}
-	})
-})
-</script>
 </head>
 <body>
+<canvas id="sq">d</canvas>
 
-<div id="t">
-	<ul>
-	<li><a href="#">obj1</a></li>
-	<li><a href="#">obj2</a></li>
-	<li><a href="#">obj3</a></li>
-	<li><a href="#">obj4</a></li>
-	<li><a href="#">obj5</a></li>
-	<li><a href="#">obj6</a></li>
-	<li><a href="#">obj7</a></li>
-	<li><a href="#">obj8</a></li>
-	<li><a href="#">obj9</a></li>
-	<li><a href="#">obj10</a></li>
-	</ul>
-</div>
-<div class="btns">
-	<button type="button">prev</button>
-	<button type="button">next</button>
-	<button type="button">auto</button>
-	<button type="button">stop</button>
-</div>
+<script type="text/javascript">
 
+</script>
 </body>
 </html>
