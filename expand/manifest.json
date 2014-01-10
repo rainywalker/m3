@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+
+  "name": "Jaelomin Test",
+  "description": "크롬 확장팩 테스트",
+  "version": "0.0.1",
+
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions" : [
+  	"tabs"
+  ]
+}
