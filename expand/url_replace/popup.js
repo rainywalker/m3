@@ -22,7 +22,7 @@ function url_rep(){
 
 			$.ajax({
 			    type: "GET",
-				url: "http://10.99.209.81:8080/ip.jsp",
+				url: "http://10.99.209.81/ip.jsp",
 				crossDomain: true,
 				dataType: "xml",
 				success: function(xml) {
@@ -55,7 +55,7 @@ function url_rep(){
 			url_set.style.display = "block";
 			$.ajax({
 			    type: "GET",
-				url: "http://10.99.209.81:8080/ip.jsp",
+				url: "http://10.99.209.81/ip.jsp",
 				crossDomain: true,
 				dataType: "xml",
 				success: function(xml) {
