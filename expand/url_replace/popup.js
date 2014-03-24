@@ -22,13 +22,13 @@ function url_rep(){
 
 			$.ajax({
 			    type: "GET",
-				url: "http://10.99.209.81/ip.jsp",
+				url: "http://10.67.20.239/m3/expand/url_replace/documentRoot.php",
 				crossDomain: true,
 				dataType: "xml",
 				success: function(xml) {
 					var ip = document.getElementById("ip");
 					var com_name = document.getElementById("com_name");
-					var local_ip = $(xml).find("addr").text();
+					var local_ip = $(xml).find("dir").text();
 					ip.innerHTML = local_ip;
 					com_name.innerHTML = localStorage.key(localStg_key)
 					var doc_root = document.getElementById("doc_root");
@@ -55,11 +55,11 @@ function url_rep(){
 			url_set.style.display = "block";
 			$.ajax({
 			    type: "GET",
-				url: "http://10.99.209.81/ip.jsp",
+				url: "http://10.67.20.239/m3/expand/url_replace/documentRoot.php",
 				crossDomain: true,
 				dataType: "xml",
 				success: function(xml) {
-					var local_ip =  $(xml).find("addr").text() + "/";
+					var local_ip =  $(xml).find("dir").text() + "/";
 					var doc_root = document.getElementById("doc_root");
 					var btn_ipt = document.getElementById("btn_ipt");
 					btn_ipt.onclick = function(){
@@ -89,7 +89,7 @@ function url_rep(){
 							console.log(sum,localStorage.key(localStg_key))
 						}
 						else {
-							alert(tabArray[0].status)
+							console.log("failed")
 						}
 					
 					}

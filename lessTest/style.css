@@ -1,0 +1,21 @@
+#header {
+  height: 100px;
+  color: #4d926f;
+  width: 100px;
+  background: #4d926f;
+}
+#header .box1 {
+  height: 80px;
+  border: 1px solid red;
+  width: 80px;
+  margin: 0 auto;
+}
+#header .box1 p {
+  width: 50px;
+  margin: 0 auto;
+  height: 50px;
+  border: 1px solid blue;
+}
+#footer {
+  width: 100px;
+}
