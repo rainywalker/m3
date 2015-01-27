@@ -1,569 +1,87 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<title>test</title>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
-<style type="text/css">
-*{margin:0;padding:0}
-.hid{overflow:hidden}
-ul,li{list-style:none}
-ul{margin:0 auto}
-.hid{overflow:hidden}
-.obj{width:200px;text-align:center;overflow:hidden;border:1px solid rgba("0,0,0,.1");box-sizing: border-box;background:#ddd}
-.obj a:before{position:absolute;width:100%;height:100%;content:"";left:0;top:0;border:1px solid rgba(255,255,255,.5);box-sizing:border-box}
-.obj img{width:100%}
-.obj a{display:block;position:relative}
-.w_disabled{position:fixed;width:100%;height:100%;left:0;top:0;background:#000;opacity:0.8;z-index:100}
-.ly_obj{position:fixed;left:50%;top:50%;z-index:110;border:2px solid #ddd}
-.ly_obj img{width:100%}
-</style>
-
-<script src="http://www.script-tutorials.com/demos/323/js/jquery.min.js"></script>
-<script type="text/javascript">
-    (function(a, b, c) {
-
-        "use strict";
-        var d = b.event, e;
-        d.special.smartresize = {setup: function() {
-            b(this).bind("resize", d.special.smartresize.handler)
-        },
-        teardown: function() {
-            b(this).unbind("resize", d.special.smartresize.handler)
-        },
-        handler: function(a, c) {
-            var d = this, f = arguments;
-            a.type = "smartresize", e && clearTimeout(e), e = setTimeout(function() {
-                b.event.handle.apply(d, f)
-            }, c === "execAsap" ? 0 : 100)
-        }},
-        b.fn.smartresize = function(a) {
-            return a ? this.bind("smartresize", a) : this.trigger("smartresize", ["execAsap"])
-        },
-        b.pint = function(a, c) {
-            this.element = b(c), this._create(a), this._init()
-        },
-        b.pint.settings = {isResizable: !0,isAnimated: !1,animationOptions: {queue: !1,duration: 500},gutterWidth: 0,isRTL: !1,isFitWidth: !1,containerStyle: {position: "relative"}}, b.pint.prototype = {_filterFindBricks: function(a) {
-            var b = this.options.cn;
-            return b ? a.filter(b).add(a.find(b)) : a
-        },
-        _getBricks: function(a) {
-            var b = this._filterFindBricks(a).css({position: "absolute"}).addClass("pinterObj-brick");
-            return b
-        },
-        _create: function(c) {
-            this.options = b.extend(!0, {}, b.pint.settings, c), this.styleQueue = [];
-            var d = this.element[0].style;
-            this.originalStyle = {height: d.height || ""};
-            var e = this.options.containerStyle;
-            for (var f in e)
-                this.originalStyle[f] = d[f] || "";
-            this.element.css(e), this.horizontalDirection = this.options.isRTL ? "right" : "left", this.offset = {x: parseInt(this.element.css("padding-" + this.horizontalDirection), 10),y: parseInt(this.element.css("padding-top"), 10)}, this.isFluid = this.options.columnWidth && typeof this.options.columnWidth == "function";
-            var g = this;
-            setTimeout(function() {
-                g.element.addClass("pinterObj")
-            }, 0), this.options.isResizable && b(a).bind("smartresize.pinterObj", function() {
-                g.resize()
-            }), this.reloadItems()
-        },
-        _init: function(a) {
-            this._getColumns(), this._reLayout(a)
-        },
-        option: function(a, c) {
-            b.isPlainObject(a) && (this.options = b.extend(!0, this.options, a))
-        },
-        layout: function(a, b) {
-            for (var c = 0, d = a.length; c < d; c++)
-                this._placeBrick(a[c]);
-            var e = {};
-            e.height = Math.max.apply(Math, this.colYs);
-            if (this.options.isFitWidth) {
-                var f = 0;
-                c = this.cols;
-                while (--c) {
-                    if (this.colYs[c] !== 0)
-                        break;
-                    f++
-                }
-                e.width = (this.cols - f) * this.columnWidth - this.options.gutterWidth
-            }
-            this.styleQueue.push({$el: this.element,style: e});
-            var g = this.isLaidOut ? this.options.isAnimated ? "animate" : "css" : "css", h = this.options.animationOptions, i;
-            for (c = 0, d = this.styleQueue.length; c < d; c++)
-                i = this.styleQueue[c], i.$el[g](i.style, h);
-            this.styleQueue = [], b && b.call(a), this.isLaidOut = !0
-        },
-        _getColumns: function() {
-            var a = this.options.isFitWidth ? this.element.parent() : this.element, b = a.width();
-            this.columnWidth = this.isFluid ? this.options.columnWidth(b) : this.options.columnWidth || this.$bricks.outerWidth(!0) || b, this.columnWidth += this.options.gutterWidth, this.cols = Math.floor((b + this.options.gutterWidth) / this.columnWidth), this.cols = Math.max(this.cols, 1)
-        },
-        _placeBrick: function(a) {
-            var c = b(a), d, e, f, g, h;
-            d = Math.ceil(c.outerWidth(!0) / this.columnWidth), d = Math.min(d, this.cols);
-            if (d === 1)
-                f = this.colYs;
-            else {
-                e = this.cols + 1 - d, f = [];
-                for (h = 0; h < e; h++)
-                    g = this.colYs.slice(h, h + d), f[h] = Math.max.apply(Math, g)
-            }
-            var i = Math.min.apply(Math, f), j = 0;
-            for (var k = 0, l = f.length; k < l; k++)
-                if (f[k] === i) {
-                    j = k;
-                    break
-                }
-            var m = {top: i + this.offset.y};
-            m[this.horizontalDirection] = this.columnWidth * j + this.offset.x, this.styleQueue.push({$el: c,style: m});
-            var n = i + c.outerHeight(!0), o = this.cols + 1 - l;
-            for (k = 0; k < o; k++)
-                this.colYs[j + k] = n
-        },
-        resize: function() {
-            var a = this.cols;
-            this._getColumns(), (this.isFluid || this.cols !== a) && this._reLayout()
-        },
-        _reLayout: function(a) {
-            var b = this.cols;
-            this.colYs = [];
-            while (b--)
-                this.colYs.push(0);
-            this.layout(this.$bricks, a)
-        },
-        reloadItems: function() {
-            this.$bricks = this._getBricks(this.element.children())
-        },
-        reload: function(a) {
-            this.reloadItems(), this._init(a)
-        },
-        appended: function(a, b, c) {
-            if (b) {
-                this._filterFindBricks(a).css({top: this.element.height()});
-                var d = this;
-                setTimeout(function() {
-                    d._appended(a, c)
-                }, 1)
-            } else
-                this._appended(a, c)
-        },
-        _appended: function(a, b) {
-            var c = this._getBricks(a);
-            this.$bricks = this.$bricks.add(c), this.layout(c, b)
-        },
-        remove: function(a) {
-            this.$bricks = this.$bricks.not(a), a.remove()
-        },
-        destroy: function() {
-            this.$bricks.removeClass("pinterObj-brick").each(function() {
-                this.style.position = "", this.style.top = "", this.style.left = ""
-            });
-            var c = this.element[0].style;
-            for (var d in this.originalStyle)
-                c[d] = this.originalStyle[d];
-            this.element.unbind(".pinterObj").removeClass("pinterObj").removeData("pinterObj"), b(a).unbind(".pinterObj")
-        }},
-        b.fn.imagesLoaded = function(a) {
-            function h() {
-                a.call(c, d)
-            }
-            function i(a) {
-                var c = a.target;
-                c.src !== f && b.inArray(c, g) === -1 && (g.push(c), --e <= 0 && (setTimeout(h), d.unbind(".imagesLoaded", i)))
-            }
-            var c = this, d = c.find("img").add(c.filter("img")), e = d.length, f = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==", g = [];
-            return e || h(), d.bind("load.imagesLoaded error.imagesLoaded", i).each(function() {
-                var a = this.src;
-                this.src = f, this.src = a
-            }), c
-        };
-        var f = function(b) {
-            a.console && a.console.error(b)
-        };
-        b.fn.pinterObj = function(a) {
-            if (typeof a == "string") {
-                var c = Array.prototype.slice.call(arguments, 1);
-                this.each(function() {
-                    var d = b.data(this, "pinterObj");
-                    d[a].apply(d, c)
-                })
-            } else
-                this.each(function() {
-                    var c = b.data(this, "pinterObj");
-                    c ? (c.option(a || {}), c._init()) : b.data(this, "pinterObj", new b.pint(a, this))
-                });
-            return this
-        }
-    })(window, jQuery);
-
-</script>
-
+    <meta charset="utf-8">
 </head>
 <body>
+<canvas id="canvas" width="600" height="600"></canvas>
+<script>
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    FONT_HEIGHT = 15,
+    MARGIN = 35,
+    HAND_TRUNCATION = canvas.width/25,
+    HOUR_HAND_TRUNCATION = canvas.width/10,
+    NUMERAL_SPACING = 20,
+    RADIUS = canvas.width/2 - MARGIN,
+    HAND_RADIUS = RADIUS + NUMERAL_SPACING;
 
-<ul class="img_lst">
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0587.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0589.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0618.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0646.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0649.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0810.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0682.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0685.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0688.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0689.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0691.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0701.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0705.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0679.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0707.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0709.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0717.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0746.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0795.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0808.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0812.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0814.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0818.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0821.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0823.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0825.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0832.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0837.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0858.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0865.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0870.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0872.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0911.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0918.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0922.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0923.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0930.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0935.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0936.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0940.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0943.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src="http://art0252.cdn1.cafe24.com/jm1/IMG_0944.jpg"></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
-    <li class="cds"><div class="obj"><a href="#"><img src=""></div></a></li>
+    function drawCircle() {
+        context.beginPath();
+        context.arc(
+                canvas.width/2,
+                canvas.height/2,
+                RADIUS,
+                0,
+                Math.PI*2,
+                true)
+        context.stroke()
 
 
 
-</ul>
-<script type="text/javascript">
-    $('.img_lst').pinterObj({
-     cn : '.obj',
-     isAnimated: true,
-     isFitWidth: true
-     });
-    $(".obj").each(function(){
-        $(this).css("background-image","url("+$(this).find("img").attr("src") +")");
-        $(this).css("background-size","100% 100%")
-    });
+    }
+    function drawNumerals() {
+        var numerals = [1,2,3,4,5,6,7,8,9,10,11,12],
+        angle = 0,
+        numeralWidth = 0;
+        numerals.forEach(function(numeral){
+            angle = Math.PI / 6 * (numeral-3);
+            numeralWidth = context.measureText(numeral).width;
+            context.fillText(
+                    numeral,
+                    canvas.width/2 + Math.cos(angle)*(HAND_RADIUS) - numeralWidth/2,
+                    canvas.height/2 + Math.sin(angle)*(HAND_RADIUS) + FONT_HEIGHT/3
+                    )
+        })
+    }
+    function drawCenter(){
+        context.beginPath();
+        context.arc(
+                canvas.width/2,
+                canvas.height/2,
+                5,
+                0,
+                Math.PI*2,
+                true
+        )
+        context.fill()
+    }
 
-    $(".obj").find("a").on("click",function(e){
-        e.preventDefault()
-        var ly_obj = '<div class="ly_obj">'+ "<img src="+ $(this).find("img").attr("src")+ ">" +'</div>';
-        var w_disabled = '<div class="w_disabled"></div>';
-        $("body").append(w_disabled);
-
-
-        $("body").append(ly_obj);
-        $("body").addClass("hid");
-
-        $(".ly_obj").css("margin-left",-$(this).find("img").width())
-        $(".ly_obj").css("margin-top",-$(this).find("img").height());
-
-        e.stopPropagation()
-
-    });
-    $("body").on("click",function(){
-        if ($("body").find(".w_disabled")) {
-            $(".w_disabled").remove();
-            $(".ly_obj").remove()
-            $("body").removeClass("hid");
-        }
-
-    })
-
-
-
+    function drawHand(loc,isHour) {
+        var angle = (Math.PI * 2) * (loc/60) - Math.PI/ 2,
+        handRadius = isHour ? RADIUS - HAND_TRUNCATION - HOUR_HAND_TRUNCATION : RADIUS - HAND_TRUNCATION;
+        context.moveTo(canvas.width/2,canvas.height/2);
+        context.lineTo(canvas.width /2 + Math.cos(angle)* handRadius,canvas.height/2 + Math.sin(angle)*handRadius);
+        context.stroke()
+    }
+    function drawHands() {
+        var date = new Date,
+        hour = date.getHours();
+        hour = hour > 12 ? hour - 12 : hour;
+        drawHand(hour*5+(date.getMinutes()/60)*5,true,0.5);
+        drawHand(date.getMinutes(),false,0.5);
+        drawHand(date.getSeconds(),false,0.2);
+    }
+    function drawClock() {
+        context.clearRect(0,0,canvas.width,canvas.height);
+        drawCircle();
+        drawCenter();
+        drawHands();
+        drawNumerals()
+    }
+    context.font = FONT_HEIGHT + "px Airal";
+    loop = setInterval(drawClock,10)
 </script>
 </body>
 </html>

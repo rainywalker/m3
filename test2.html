@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+</head>
+<body>
+<a href="#" id="tt">12</a>
+<p id="p_node">rainywalker</p>
+
+
+<script type="text/javascript">
+var b_url = window.location.href;
+var str2 = location.protocol
+
+
+console.log(b_url);
+console.log(b_url.indexOf(str2),b_url.indexOf(str2)+str2.length-1);
+console.log(b_url.substring(b_url.indexOf(str2),b_url.indexOf(str2)+str2.length-1));
+console.log(b_url.substr(b_url.indexOf(str2),str2.length-1));
+console.log(b_url.replace(b_url.substr(b_url.indexOf(str2),str2.length-1),""));
+
+
+
+</script>
+</body>
+</html>
+

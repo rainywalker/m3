@@ -1,0 +1,56 @@
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <title>jm test</title>
+    <link href="main.css" rel="stylesheet">
+    <script src="modernizr.js"></script>
+    <script src="loader.js"></script>
+</head>
+<body>
+<div id="game">
+    <div class="screen" id="splash-screen">
+        <h1 class="logo">Jewel<br>Warrior</h1>
+        <span>계속 하려면 탭하세</span>
+    </div>
+    <div class="screen" id="main-menu"></div>
+    <div class="screen" id="game-screen"></div>
+    <div class="screen" id="high-scores"></div>
+</div>
+<div id="m_obj">
+
+</div>
+<script type="text/javascript">
+var m_obj = document.getElementById("m_obj");
+var left = 0;
+var tops = 0;
+var x_speed;
+var y_speed;
+
+document.onkeydown = function(e) {
+    var startTime = new Date().getDate();
+    if(e.keyCode==39) {
+       l = left++
+
+        m_obj.style.left = l + "px"
+    }
+    if(e.keyCode==37) {
+        l = left--
+        //alert(l)
+        m_obj.style.left = l + "px"
+    }
+    if(e.keyCode==40) {
+     t = tops++
+        //alert(t)
+        m_obj.style.top = t + "px"
+    }
+    if(e.keyCode==38) {
+     t = tops--
+        //alert(l)
+        m_obj.style.top = t + "px"
+    }
+}
+
+</script>
+</body>
+</html>

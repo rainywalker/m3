@@ -26,7 +26,6 @@ function url_rep(){
         //로컬스토리지에 key가 있을때
 
             if (localStorage.length > 0){
-
 			$("#url_set").hide()
 			$.ajax({
 			    type: "GET",
@@ -35,19 +34,17 @@ function url_rep(){
 				dataType: "xml",
 				success: function(xml) {
 					var pmt = $(xml).find("addr").text() + "/";
-					var root_val = doc_root.value.toLowerCase();
+					//var root_val = doc_root.value.toLowerCase();
 					if (currentURL.match("file://")){
-                        var pc_substr = currentURL.substr(11);
+                        var pc_substr = currentURL.substr(7);
                         var cut = pc_substr.split("/");
+                        var pcURL = cut.splice(1).join("/")
 
-                        var pcURL = cut.splice(0).join("/")
-
-                        var localKey = localStorage.getItem("key");
-                        //var sss = pcURL.search(localKey)
+                        var localKey = localStorage.getItem("key")
+                        var relsultStr = pcURL.substr(localKey.length);
                         localKey = pmt;
-
-                        var pcBuild = https + localKey + pcURL;
-
+                        var pcBuild = https + pmt + relsultStr;
+                        console.log(pcBuild)
                         chrome.tabs.update({url: pcBuild});
                         ip.innerHTML = pmt;
                         url_set.style.display = "none";
@@ -82,24 +79,36 @@ function url_rep(){
                             url_set.style.display = "none";
                         }
                         else {
-                            var pc_substr = currentURL.substr(11);
+                            var pc_substr = currentURL.substr(8);
                             var cut = pc_substr.split("/");
                             var pcURL = cut.splice(1).join("/")
 
                             btn_ipt.onclick = function(){
+
                                 var root_val = doc_root.value.toLowerCase()
-                                var key = root_val;
-                                var ch_str = key.split("/").splice(0).join("/")
-                                var final_URL = pcURL.replace(ch_str,"")
-                                localStorage.setItem("key",root_val);
-                                var localKey = localStorage.getItem(key);
-                                localKey = pmt
-                                var pcBuild = https + localKey + final_URL;
-                                console.log(ch_str)
-                                chrome.tabs.update({url: pcBuild});
-                                ip.innerHTML = pmt;
-                                com_name.innerHTML = "naver"
-                                url_set.style.display = "none"
+                                if (root_val == "") {
+                                    alert("입력해주세요")
+                                }
+                                else {
+                                    var key = root_val;
+                                    var ch_str = key.split("/").splice(0).join("/");
+                                    var match_str = currentURL.indexOf(ch_str)
+                                    if (match_str != -1) {
+                                        var relsultStr = pc_substr.substr(ch_str.length);
+                                        localStorage.setItem("key",root_val);
+                                        var localKey = localStorage.getItem(key);
+                                        localKey = pmt
+                                        var pcBuild = https + localKey + relsultStr;
+                                        console.log(pcBuild)
+                                        chrome.tabs.update({url: pcBuild});
+                                        ip.innerHTML = pmt;
+                                        com_name.innerHTML = "naver"
+                                        url_set.style.display = "none"
+
+                                    }
+
+                                }
+
                             }
 
                         }
@@ -119,7 +128,5 @@ function url_rep(){
 
 }
 
-function get_local(){
 
-}
 addLoadEvent(url_rep)

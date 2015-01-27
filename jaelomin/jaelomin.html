@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jaelomin.com prototype</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <meta charset="utf-8">
+    <link href="basic.css" rel="stylesheet" type="text/css">
+
+
+
+    <script src="http://www.script-tutorials.com/demos/323/js/jquery.min.js"></script>
+    <script src="http://www.script-tutorials.com/demos/323/js/jquery.masonry.min.js"></script>
+    <script src="basic.js"></script>
+</head>
+<body>
+<div class="wrap">
+    <section class="item">
+        <div class="pin">
+            <p class="thumb"><img src="http://upload.inven.co.kr/upload/2014/07/09/bbs/i0373061278.jpg" width="100%"></p>
+            <dl class="tx_info">
+                <dt>테스트중인데 프로토타입으로 한번 해보고 안되면 말구..ㅎ</dt>
+                <dd>제목에 대해서 뭔가 설명을 하긴 해야되는데 안쓰기도 애매하고 그러니까 이게 뭐냐면..ㅎ</dd>
+            </dl>
+
+        </div>
+    </section>
+    <section class="item">
+        <div class="pin">
+            <dl class="tx_info">
+                <dt>테스트중인데 프로토타입으로 한번 해보고 안되면 말구..ㅎ</dt>
+                <dd>
+                    jewel.game = (function(){
+                    var dom = jewel.dom,
+                    $ = dom.$;
+
+                    function showScreen(screenId){
+                    var activeScreen = $("#game .screen.active")[0],
+                    screen = $("#"+screenId)[0];
+                    if (activeScreen){
+                    dom.removeClass(screen,"active")
+                    }
+                    dom.addClass(screen,"active");
+                    }
+                    return {
+                    showScreen : showScreen
+                    }
+                    })()</dd>
+            </dl>
+        </div>
+    </section>
+
+    <section class="item">
+        <div class="pin">
+            <p class="thumb"><img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQpUwfnM2OLT1VpPOGe9tD1rJ9EdXZxSLfVTgSupMQ60yY8XFxa7A" width="100%"></p>
+            <dl class="tx_info">
+                <dt>테스트중인데 프로토타입으로 한번 해보고 안되면 말구..ㅎ</dt>
+                <dd>제목에 대해서 뭔가 설명을 하긴 해야되는데 안쓰기도 애매하고 그러니까 이게 뭐냐면..ㅎ</dd>
+            </dl>
+        </div>
+    </section>
+
+    <section class="item">
+        <div class="pin">
+            <p class="thumb"><img src="http://upload.inven.co.kr/upload/2014/07/03/bbs/i4316554523.jpg" width="100%"></p>
+            <dl class="tx_info">
+                <dt>테스트중인데 프로토타입으로 한번 해보고 안되면 말구..ㅎ</dt>
+                <dd>제목에 대해서 뭔가 설명을 하긴 해야되는데 안쓰기도 애매하고 그러니까 이게 뭐냐면..ㅎ</dd>
+            </dl>
+        </div>
+    </section>
+    <section class="item">
+        <div class="pin">
+            <dl class="tx_info">
+                <dt>테스트중인데 프로토타입으로 한번 해보고 안되면 말구..ㅎ</dt>
+                <dd>제목에 대해서 뭔가 설명을 하긴 해야되는데 안쓰기도 애매하고 그러니까 이게 뭐냐면..ㅎ</dd>
+            </dl>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>
