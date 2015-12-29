@@ -12,6 +12,7 @@ var doc = window.document;
 //Find id, class 
 
 
+
 function m3(str) {
 	if (str.charAt(0) === "#") {
 		var objId = doc.getElementById(str.slice(1))

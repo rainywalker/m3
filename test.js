@@ -9,3 +9,4 @@ for (var dev in ifaces) {
     }
   });
 }
+var dd = document

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #obj{position:absolute;border:1px solid red;width:200px;height:200px}
+    </style>
+</head>
+<body>
+<div id="obj">
+
+</div>
+<script>
+    var obj = document.getElementById('obj'),
+            calc_width = (window.innerWidth /2) - (obj.offsetWidth / 2) + document.body.scrollLeft,
+            calc_Height = (window.innerHeight /2) - (obj.offsetHeight / 2) + document.body.scrollTop;
+    obj.style.left = calc_width + "px";
+    obj.style.top = calc_Height + "px";
+</script>
+</body>
+</html>
